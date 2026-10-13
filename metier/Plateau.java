@@ -7,6 +7,7 @@ public class Plateau
     public Plateau()
     {
         this.plateau = new Grille[3][3] ;
+        this.initPlateau();
     }
 
     public void     initPlateau ()
