@@ -25,8 +25,10 @@ public class Plateau
     public Grille[][] getPlateau ()                    { return this.plateau           ;}
     public Grille     getGrille  ( int lig , int col ) { return this.plateau[lig][col] ;}
 
-    public void       setNombre  ( int lig , int col , int lig2 , int col2 ,int nbr ) 
+    public void    setNombre  ( int lig , int col , int lig2 , int col2 ,int nbr ) 
     { 
+        if (nbr < 0 || nbr > 9) return;
+
         if ( !this.estPresent( lig , col , lig2 , col2 , nbr) )
             this.plateau[lig][col].setCase(lig2 , col2 , nbr );
     }
