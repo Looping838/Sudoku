@@ -1,7 +1,7 @@
-./metier/
-./metier/
-./metier/
-./metier/
+./metier/Case.java
+./metier/Grille.java
+./metier/Plateau.java
+./metier/Sudoku.java
 
 ./controleur/Controleur.java
 
