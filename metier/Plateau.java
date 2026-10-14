@@ -17,7 +17,6 @@ public class Plateau
             for ( int colonne = 0 ; colonne < this.plateau[ligne].length ; colonne ++ )
             {
                 this.plateau[ligne][colonne] = new Grille() ;
-                this.plateau[ligne][colonne].initGrille();
             }
         }
     }
