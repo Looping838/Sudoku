@@ -70,4 +70,39 @@ public class Plateau
         return true;
     }
 
+    public void    setPlateauJeu ( int difficulte )
+    {
+        int x1  = 0 ;
+        int x2  = 0 ;
+        int y1  = 0 ;
+        int y2  = 0 ;
+
+        int nbr = 0 ;
+
+        int cpt = 0 ;
+        int essai = 0 ;
+
+        while ( cpt < 10 && essai++ < 1000)
+        {
+            x1 = (int) (Math.random() * 3) ;
+            x2 = (int) (Math.random() * 3) ;
+            y1 = (int) (Math.random() * 3) ;
+            y2 = (int) (Math.random() * 3) ;
+
+            nbr = (int) (Math.random() * 9) + 1;
+                
+            if ( this.plateau[x1][y1].getCase(x2, y2).estModifiable() )
+            {
+                int avant = this.plateau[x1][y1].getCase(x2, y2).getNombre();
+                this.setNombre(x1, y1, x2, y2, nbr);
+                int apres = this.plateau[x1][y1].getCase(x2, y2).getNombre();
+                if (apres != avant)   // placement effectif
+                {
+                    this.plateau[x1][y1].getCase(x2, y2).setEstModifiable(false);
+                    cpt++;
+                }
+            }
+        }   
+    }
+
 }

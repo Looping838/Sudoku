@@ -7,6 +7,7 @@ public class Grille
     public Grille ()
     {
         this.grille = new Case[3][3] ;
+        this.initGrille(); 
     }
 
     public void     initGrille ()

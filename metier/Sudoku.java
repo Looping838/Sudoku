@@ -3,10 +3,13 @@ package metier;
 public class Sudoku 
 {
     private Plateau plateau ;
+    private int     difficulte ;
 
     public Sudoku () 
     {
         this.plateau = new Plateau() ;
+        this.setPlateauJeu();
+        this.difficulte = 0 ;
     }
 
     public int getNombre ( int lig , int col , int lig2 , int col2 )
@@ -24,5 +27,10 @@ public class Sudoku
     }
 
     public boolean estGagne () { return this.plateau.estResolu() ; }
+
+    public void    setPlateauJeu ()
+    {
+        this.plateau.setPlateauJeu( difficulte ) ;
+    }
     
 }
