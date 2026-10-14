@@ -15,7 +15,7 @@ public class Case
 
     public int  getX       () { return this.x ;}
     public int  getY       () { return this.y ;}
-    public int  getNombre () { return this.nombre ;}
+    public int  getNombre  () { return this.nombre ;}
 
     public void setX         (int     x)      { this.x = x ;}
     public void setY         (int     y)      { this.y = y ;}

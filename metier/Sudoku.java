@@ -22,4 +22,7 @@ public class Sudoku
     {
         this.plateau.getGrille( lig, col ).getCase(lig2, col2).setNombre(0) ;
     }
+
+    public boolean estGagne () { return this.plateau.estResolu() ; }
+    
 }
