@@ -15,6 +15,7 @@ public class Controleur
 
     public Controleur()
     {
+        this.initPlateau();
         this.frameJeu   = new FrameJeu (this);
     }
 

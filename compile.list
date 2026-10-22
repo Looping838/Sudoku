@@ -5,6 +5,4 @@
 
 ./controleur/Controleur.java
 
-./ihm/ConstantesIHM.java
-./ihm/PanelAccueil.java
-./ihm/PanelChoixDiff.java
+./ihm/FrameJeu.java
