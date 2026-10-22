@@ -12,6 +12,8 @@ public class Sudoku
         this.difficulte = 0 ;
     }
 
+    public Plateau getPlateau () { return this.plateau ;}
+
     public int getNombre ( int lig , int col , int lig2 , int col2 )
     {
         return this.plateau.getGrille( lig, col ).getCase(lig2, col2).getNombre() ;
