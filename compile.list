@@ -6,3 +6,5 @@
 ./controleur/Controleur.java
 
 ./ihm/FrameJeu.java
+./ihm/IhmTerminalTeste.java
+./ihm/IhmTerminal.java

@@ -12,12 +12,17 @@ public class Controleur
 
     private Sudoku   metier ;
     private FrameJeu frameJeu ;
-
+/*
     public Controleur()
     {
         this.initPlateau();
         this.frameJeu   = new FrameJeu (this);
     }
+        */
+
+    public Controleur() {
+    this.initPlateau();
+}
 
     public void initPlateau()
     {
