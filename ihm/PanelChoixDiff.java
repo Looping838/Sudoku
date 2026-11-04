@@ -307,7 +307,7 @@ public class PanelChoixDiff extends JPanel implements ActionListener
             @Override
             public void mouseEntered(MouseEvent e) 
             {
-                btnRetour.setBackground(ConstantesIHM.COULEUR_GRIS_SURVOL);
+                btnRetour.setBackground(ConstantesIHM.COULEUR_SURVOL);
                 btnRetour.setForeground(Color.BLACK); // Pour que le texte reste lisible
             }
 

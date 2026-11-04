@@ -131,7 +131,7 @@ public class PanelAccueil extends JPanel implements ActionListener
             @Override
             public void mouseEntered(MouseEvent e) 
             {
-                btnJouer.setBackground(ConstantesIHM.COULEUR_GRIS_SURVOL);
+                btnJouer.setBackground(ConstantesIHM.COULEUR_SURVOL);
                 btnJouer.setForeground(Color.BLACK); // Pour que le texte reste lisible
             }
 
@@ -156,7 +156,7 @@ public class PanelAccueil extends JPanel implements ActionListener
             @Override
             public void mouseEntered(MouseEvent e) 
             {
-                btnQuitter.setBackground(ConstantesIHM.COULEUR_GRIS_SURVOL);
+                btnQuitter.setBackground(ConstantesIHM.COULEUR_SURVOL);
                 btnQuitter.setForeground(Color.BLACK); // Pour que le texte reste lisible
             }
 

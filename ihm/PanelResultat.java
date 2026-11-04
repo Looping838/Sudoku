@@ -57,12 +57,12 @@ public class PanelResultat extends JPanel implements ActionListener
         if (e.getSource() == this.btnAccueil)
         {
             this.frame.setPnl(this.frame.getPnl(0));
-            this.ctrl.resetJeu();
+            //this.ctrl.resetJeu();
         }
 
         else if (e.getSource() == this.btnRecommencer)
         {
-            this.frame.restartJeu();
+            //this.frame.restartJeu();
             this.frame.setPnl(this.frame.getPnl(this.indice - 1));
         }
 
@@ -159,7 +159,7 @@ public class PanelResultat extends JPanel implements ActionListener
             @Override
             public void mouseEntered(MouseEvent e) 
             {
-                btnAccueil.setBackground(ConstantesIHM.COULEUR_GRIS_SURVOL);
+                btnAccueil.setBackground(ConstantesIHM.COULEUR_SURVOL);
                 btnAccueil.setForeground(Color.BLACK); // Pour que le texte reste lisible
             }
 
@@ -183,7 +183,7 @@ public class PanelResultat extends JPanel implements ActionListener
             @Override
             public void mouseEntered(MouseEvent e) 
             {
-                btnRecommencer.setBackground(ConstantesIHM.COULEUR_GRIS_SURVOL);
+                btnRecommencer.setBackground(ConstantesIHM.COULEUR_SURVOL);
                 btnRecommencer.setForeground(Color.BLACK); // Pour que le texte reste lisible
             }
 
@@ -201,7 +201,7 @@ public class PanelResultat extends JPanel implements ActionListener
             @Override
             public void mouseEntered(MouseEvent e) 
             {
-                btnQuitter.setBackground(ConstantesIHM.COULEUR_GRIS_SURVOL);
+                btnQuitter.setBackground(ConstantesIHM.COULEUR_SURVOL);
                 btnQuitter.setForeground(Color.BLACK); // Pour que le texte reste lisible
             }
 
