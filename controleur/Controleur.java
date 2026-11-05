@@ -22,10 +22,26 @@ public class Controleur
     }
 
     public Plateau getPlateau () { return this.metier.getPlateau() ;}
+    public int     getNombre  ( int lig , int col , int lig2 , int col2          ) { return this.metier.getNombre(lig , col , lig2 ,col2);}
 
-    public int  getNombre     ( int lig , int col , int lig2 , int col2          ) { return this.metier.getNombre(lig , col , lig2 ,col2);}
-    public void setNombre     ( int lig , int col , int lig2 , int col2 ,int nbr ) { this.metier.setNombre    (lig, col, lig2, col2, nbr);}
-    public void effacerNombre ( int lig , int col , int lig2 , int col2          ) { this.metier.effacerNombre(lig, col, lig2, col2     );}
+    public void setNombre     ( int lig , int col , int lig2 , int col2 ,int nbr ) 
+    { 
+        this.metier.setNombre    (lig, col, lig2, col2, nbr);
+        this.metier.getPile().empiler("setNbrCase " + nbr + " [" + lig + "," + col + "]" + " [" + lig2 + "," + col2 + "]" );
+    
+    }
+    public void effacerNombre ( int lig , int col , int lig2 , int col2          ) 
+    { 
+        int num = this.metier.getPlateau().getGrille(lig , col ).getCase(lig2, col2).getNombre() ;
+        this.metier.effacerNombre(lig, col, lig2, col2);
+        this.metier.getPile().empiler("effacerChiffre " + num + " [" + lig + "," + col + "]" + " [" + lig2 + "," + col2 + "]");
+    }
+
+    public void    echangerNbr (int lig1, int col1, int lig2, int col2) 
+    { 
+        this.metier.echangerNbr(lig1, col1, lig2, col2);
+        this.metier.getPile().empiler("echangerNbr " + " [" + lig1 + "," + col1 + "]" + " [" + lig2 + "," + col2 + "]");
+    }
 
     public boolean estGagne () { return this.metier.estGagne() ; }
    public static void main (String[] args) { new Controleur(); }
