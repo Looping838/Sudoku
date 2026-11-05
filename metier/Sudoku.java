@@ -35,7 +35,14 @@ public class Sudoku
 
     public void    echangerNbr(int lig1, int col1, int lig2, int col2 , int lig3, int col3, int lig4, int col4) 
     {
-        
+        int nbr1 = this.plateau.getGrille( lig1, col1 ).getCase(lig2, col2).getNombre() ;
+
+        int nbr2 = this.plateau.getGrille( lig3, col3 ).getCase(lig4, col4).getNombre() ;
+
+        this.plateau.getGrille( lig1, col1 ).getCase(lig2, col2).setNombre(nbr1) ;
+
+        this.plateau.getGrille( lig3, col3 ).getCase(lig4, col4).setNombre(nbr2) ;
+
     }
 
     public boolean estGagne () { return this.plateau.estResolu() ; }
