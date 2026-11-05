@@ -53,17 +53,19 @@ public class Pile
                 this.ctrl.setNombre(lig1, col1, lig2, col2, val);           
             }
 
-            case "effacerNombre" -> {
+            case "effacerNombre" -> 
+            {
                 
                 int lig1 = Integer.parseInt(parties[1]);
                 int col1 = Integer.parseInt(parties[2]);
                 int lig2 = Integer.parseInt(parties[3]);
                 int col2 = Integer.parseInt(parties[4]);
 
-                this.ctrl.effacerNombre(lig1, col1 lig2, col2);
+                this.ctrl.effacerNombre(lig1, col1 , lig2, col2);
             }
 
-            case "echangerNbr" -> {
+            case "echangerNbr" -> 
+            {
                 int lig1 = Integer.parseInt(parties[1]);
                 int col1 = Integer.parseInt(parties[2]);
                 int lig2 = Integer.parseInt(parties[3]);

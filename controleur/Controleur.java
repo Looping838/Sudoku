@@ -37,9 +37,10 @@ public class Controleur
         this.metier.getPile().empiler("effacerChiffre " + num + " [" + lig + "," + col + "]" + " [" + lig2 + "," + col2 + "]");
     }
 
-    public void    echangerNbr (int lig1, int col1, int lig2, int col2) 
+    public void    echangerNbr (int lig1, int col1, int lig2, int col2 , int lig3, int col3, int lig4, int col4) 
     { 
-        this.metier.echangerNbr(lig1, col1, lig2, col2);
+        this.metier.echangerNbr(lig1, col1, lig2, col2 , lig3, col3, lig4, col4) ;
+        
         this.metier.getPile().empiler("echangerNbr " + " [" + lig1 + "," + col1 + "]" + " [" + lig2 + "," + col2 + "]");
     }
 
