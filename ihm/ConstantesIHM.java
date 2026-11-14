@@ -11,9 +11,10 @@ public class ConstantesIHM
 {
     // Couleurs de Jeu
     public static final Color COULEUR_DEFAUT            = Color.WHITE;
-    public static final Color COULEUR_FOND              = new Color(187, 210, 215);
+    public static final Color COULEUR_FOND              = new Color(239, 239, 239);
     public static final Color COULEUR_SELECTION         = new Color(185, 215, 250);
     public static final Color COULEUR_VERT_VALIDE       = new Color(0  , 150, 0  );
+    public static final Color COULEUR_ROUGE_ERREUR      = new Color(255, 94 , 77 );
     public static final Color COULEUR_PLACE             = new Color(187, 210, 238);
     public static final Color COULEUR_SURVOL            = new Color(230, 240, 255);
     public static final Color COULEUR_BROUILLON_ACTIVE  = new Color(223, 242, 255);
