@@ -60,8 +60,18 @@ public class Sudoku
         return this.plateau.estResolu();
     }
 
+    public boolean estCaseValide(int lig, int col, int lig2, int col2)
+    {
+        return this.plateau.estCaseValide(lig, col, lig2, col2);
+    }
+
     public void setPlateauJeu()
     {
         this.plateau.setPlateauJeu(this.difficulte);
+    }
+
+    public void donnerIndice()
+    {
+        this.plateau.donnerIndice();
     }
 }
