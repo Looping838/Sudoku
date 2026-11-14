@@ -1,6 +1,7 @@
 package controleur;
 
 import ihm.FrameJeu;
+import java.awt.Dimension;
 import metier.Plateau;
 import metier.Sudoku;
 
@@ -10,11 +11,20 @@ public class Controleur
     private FrameJeu frameJeu;
     private boolean  enCoursDAnnulation;
 
+    private Dimension       tailleEcran;
+
+    int hJeu, lJeu;
+
     public Controleur()
-    {
-        this.enCoursDAnnulation = false;
-        this.initPlateau(0);
-        this.frameJeu = new FrameJeu(this);
+	{	
+        this.frameJeu   = new FrameJeu (this);
+
+        tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+
+        hJeu = (int) tailleEcran.getHeight();
+		lJeu = (int) tailleEcran.getWidth ();
+
+        this.frameJeu.setSize(tailleEcran);
     }
 
     public void initPlateau(int difficulte)
@@ -92,6 +102,11 @@ public class Controleur
         return !this.metier.getPile().estVide();
     }
 
+    public void donnerIndice()
+    {
+        this.metier.donnerIndice();
+    }
+
     public boolean estGagne()
     {
         return this.metier.estGagne();
@@ -105,6 +120,11 @@ public class Controleur
     public boolean estCaseModifiable(int lig, int col, int lig2, int col2)
     {
         return this.metier.getPlateau().getGrille(lig, col).getCase(lig2, col2).estModifiable();
+    }
+
+    public boolean estCaseValide(int lig, int col, int lig2, int col2)
+    {
+        return this.metier.estCaseValide(lig, col, lig2, col2);
     }
 
     public static void main(String[] args)
