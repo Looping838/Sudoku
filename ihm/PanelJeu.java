@@ -751,8 +751,8 @@ public class PanelJeu extends JPanel implements ActionListener
     {
         int difficulte = this.ctrl.getDifficulte();
 
-        if      (difficulte == 0) this.nbIndicesRestants = 2;
-        else if (difficulte == 1) this.nbIndicesRestants = 1;
+        if      (difficulte == 0) this.nbIndicesRestants = 5;
+        else if (difficulte == 1) this.nbIndicesRestants = 3;
         else                      this.nbIndicesRestants = 0;
         
         this.btnIndice.setText("  " + this.nbIndicesRestants); 
@@ -959,7 +959,7 @@ public class PanelJeu extends JPanel implements ActionListener
                     && PanelJeu.this.ctrl.estCaseModifiable(this.ligBloc, this.colBloc, this.ligCase, this.colCase)
                     && PanelJeu.this.ctrl.getNombre(this.ligBloc, this.colBloc, this.ligCase, this.colCase) == 0)
                 {
-                    int valeur = Integer.parseInt(PanelJeu.this.btnActif.getText());
+                    int valeur = Integer.parseInt(PanelJeu.this.btnActif.getActionCommand());
 
                     JPanel pnlBrouillon = (JPanel) tabPnlCases[this.ligBloc][this.colBloc][this.ligCase][this.colCase].getComponent(1);
                     JLabel lblPetitNum = (JLabel) pnlBrouillon.getComponent(valeur - 1);
