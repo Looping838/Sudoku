@@ -1,5 +1,8 @@
 package metier;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Plateau
 {
     private Grille[][] plateau;
@@ -67,10 +70,7 @@ public class Plateau
             return;
         }
 
-        if (!this.estPresent(lig, col, lig2, col2, nbr))
-        {
-            this.plateau[lig][col].setCase(lig2, col2, nbr);
-        }
+        this.plateau[lig][col].setCase(lig2, col2, nbr);
     }
 
     public boolean estPresent(int lig, int col, int lig2, int col2, int nombre)
@@ -110,7 +110,7 @@ public class Plateau
                 {
                     for (int c = 0; c < 3; c++)
                     {
-                        if (this.plateau[lig][col].getCase(l, c).estVide())
+                        if (!this.estCaseValide(lig, col, l, c))
                         {
                             return false;
                         }
@@ -233,6 +233,45 @@ public class Plateau
                 }
             }
         }
+    }
+
+    public void donnerIndice()
+    {
+        List<int[]> lstIndices = new ArrayList<>();
+        
+        for (int lig1 = 0; lig1 < 3; lig1++)
+        {
+            for (int col1 = 0; col1 < 3; col1++)
+            {
+                for (int lig2 = 0; lig2 < 3; lig2++)
+                {
+                    for (int col2 = 0; col2 < 3; col2++)
+                    {
+                        if (this.plateau[lig1][col1].getCase(lig2, col2).estModifiable() && this.plateau[lig1][col1].getCase(lig2, col2).getNombre() != this.solution[lig1 * 3 + lig2][col1 * 3 + col2])
+                        {
+                            lstIndices.add(new int[]{lig1, col1, lig2, col2});
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!lstIndices.isEmpty())
+        {
+            int[] indice = lstIndices.get((int) (Math.random() * lstIndices.size()));
+            int lig1 = indice[0];
+            int col1 = indice[1];
+            int lig2 = indice[2];
+            int col2 = indice[3];
+
+            this.plateau[lig1][col1].getCase(lig2, col2).setNombre(this.solution[lig1 * 3 + lig2][col1 * 3 + col2]);
+            this.plateau[lig1][col1].getCase(lig2, col2).setEstModifiable(false);
+        }
+    }
+
+    public boolean estCaseValide(int ligBloc, int colBloc, int ligCase, int colCase)
+    {
+        return this.plateau[ligBloc][colBloc].getCase(ligCase, colCase).getNombre() == this.solution[ligBloc * 3 + ligCase][colBloc * 3 + colCase];
     }
 
     public boolean estComplet(int nombre)
