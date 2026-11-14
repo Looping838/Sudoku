@@ -143,7 +143,7 @@ public class PanelJeu extends JPanel implements ActionListener
                         while (elements.hasMoreElements())
                         {
                             AbstractButton btn = elements.nextElement();
-                            if (btn.getText().equals(chiffreEfface))
+                            if (btn.getActionCommand().equals(chiffreEfface))
                             {
                                 btn.setBackground(Color.WHITE);
                                 break;
@@ -174,6 +174,14 @@ public class PanelJeu extends JPanel implements ActionListener
                     this.btnIndice.setEnabled(false);
                 }
 
+                this.ctrl.donnerIndice();
+
+                this.ligCaseSelect = -1;
+                this.colCaseSelect = -1;
+                this.ligBlocSelect = -1;
+                this.colBlocSelect = -1;
+
+                this.modeValidation = false;
                 this.majPlateau();
                 this.majBoutons();
             }
@@ -589,6 +597,7 @@ public class PanelJeu extends JPanel implements ActionListener
         for (int valeurBouton = 1; valeurBouton <= 9; valeurBouton++)
         {   
             JToggleButton btnTmp = new JToggleButton(String.valueOf(valeurBouton));
+            btnTmp.setActionCommand(String.valueOf(valeurBouton));
             btnTmp.setBackground(Color.WHITE);
             btnTmp.setFont(new Font("Sans-Serif", Font.BOLD, 18));
             btnTmp.setPreferredSize(new Dimension(tailleBoutonPave, tailleBoutonPave));
@@ -598,7 +607,7 @@ public class PanelJeu extends JPanel implements ActionListener
             btnTmp.setTransferHandler(new TransferHandler() {
                 public int getSourceActions(JComponent c) { return TransferHandler.COPY; }
                 protected java.awt.datatransfer.Transferable createTransferable(JComponent c) {
-                    return new java.awt.datatransfer.StringSelection(((JToggleButton) c).getText());
+                    return new java.awt.datatransfer.StringSelection(((JToggleButton) c).getActionCommand());
                 }
             });
 
@@ -619,12 +628,6 @@ public class PanelJeu extends JPanel implements ActionListener
                         btnTmp.setBackground(Color.WHITE);
                 }
             });
-
-            // Géré par le Controleur
-            /*
-            if (!this.ctrl.estPresent(valeurBouton)) { btnTmp.setBackground(Color.WHITE); }
-            else { btnTmp.setBackground(ConstantesIHM.COULEUR_GRIS_PLACE); }
-            */
             
             this.grpBtn.add(btnTmp);
             btnTmp.addActionListener(this);
@@ -633,6 +636,8 @@ public class PanelJeu extends JPanel implements ActionListener
 
         this.pnlNbres.revalidate();
         this.pnlNbres.repaint();
+
+        this.majBoutons();
     }
 
     public void majPlateau()
@@ -653,9 +658,30 @@ public class PanelJeu extends JPanel implements ActionListener
                             couleurCase = ConstantesIHM.COULEUR_SELECTION;
                         }
 
+                        JLabel lbl = (JLabel) this.tabPnlCases[ligB][colB][ligC][colC].getComponent(0);
+
+                        if (this.modeValidation)
+                        {
+                            if (this.ctrl.estCaseModifiable(ligB, colB, ligC, colC))
+                            {
+                                if (this.ctrl.estCaseValide(ligB, colB, ligC, colC))
+                                {
+                                    lbl.setForeground(ConstantesIHM.COULEUR_VERT_VALIDE);
+                                }
+                                else
+                                {
+                                    lbl.setForeground(ConstantesIHM.COULEUR_ROUGE_ERREUR);
+                                }
+                            }
+                            
+                        }
+                        else
+                        {
+                            lbl.setForeground(Color.BLACK);
+                        }
+
                         this.tabPnlCases[ligB][colB][ligC][colC].setBackground(couleurCase);
 
-                        JLabel lbl = (JLabel) this.tabPnlCases[ligB][colB][ligC][colC].getComponent(0);
                         CardLayout croupier = (CardLayout) this.tabPnlCases[ligB][colB][ligC][colC].getLayout();
 
                         int vraiChiffre = this.ctrl.getNombre(ligB, colB, ligC, colC);
@@ -698,17 +724,22 @@ public class PanelJeu extends JPanel implements ActionListener
             while (elements.hasMoreElements()) 
             {
                 AbstractButton btn = elements.nextElement();
-                int numero = Integer.parseInt(btn.getText());
+                int numero     = Integer.parseInt(btn.getActionCommand());
+                int nbRestants = Math.max(0, 9 - this.ctrl.getNbOccurrences(numero));
 
-                // Si le chiffre a été placé 9 fois, on le grise (ou on le désactive)
+                btn.setText("<html><div style='text-align:center;'>"
+                            + "<div style='font-size:16px;'>" + numero + "</div>"
+                            + "<div style='font-size:10px; color:#555555; margin-top:3px;'>" + nbRestants + "</div>"
+                            + "</div></html>");
+
                 if (this.ctrl.estComplet(numero))
                 {
                     btn.setBackground(ConstantesIHM.COULEUR_PLACE);
-                    // Optionnel : btn.setEnabled(false); si tu veux bloquer complètement le clic
                 }
                 else
                 {
-                    if (!btn.isSelected()) {
+                    if (!btn.isSelected())
+                    {
                         btn.setBackground(Color.WHITE);
                     }
                 }
@@ -798,7 +829,7 @@ public class PanelJeu extends JPanel implements ActionListener
                                     while (elements.hasMoreElements())
                                     {
                                         AbstractButton btn = elements.nextElement();
-                                        if (btn.getText().equals(chiffreEfface))
+                                        if (btn.getActionCommand().equals(chiffreEfface))
                                         {
                                             btn.setBackground(Color.WHITE);
                                             break;
@@ -902,7 +933,7 @@ public class PanelJeu extends JPanel implements ActionListener
                     && PanelJeu.this.ctrl.getNombre(this.ligBloc, this.colBloc, this.ligCase, this.colCase) == 0
                     && PanelJeu.this.ctrl.estCaseModifiable(this.ligBloc, this.colBloc, this.ligCase, this.colCase))
                 {
-                    int valeur = Integer.parseInt(PanelJeu.this.btnActif.getText());
+                    int valeur = Integer.parseInt(PanelJeu.this.btnActif.getActionCommand());
 
                     JLabel lblContenu = (JLabel) tabPnlCases[this.ligBloc][this.colBloc][this.ligCase][this.colCase].getComponent(0);
                     lblContenu.setForeground(Color.BLACK);
@@ -942,6 +973,8 @@ public class PanelJeu extends JPanel implements ActionListener
                         lblPetitNum.setText("");
                     }
                 }
+
+                PanelJeu.this.majPlateau();
             }
         }
 
@@ -961,7 +994,7 @@ public class PanelJeu extends JPanel implements ActionListener
             if (PanelJeu.this.ligBlocSelect != this.ligBloc || PanelJeu.this.colBlocSelect != this.colBloc ||
                 PanelJeu.this.ligCaseSelect != this.ligCase || PanelJeu.this.colCaseSelect != this.colCase)
             {
-                PanelJeu.this.tabPnlCases[this.ligBloc][this.colBloc][this.ligCase][this.colCase].setBackground(Color.WHITE);
+                PanelJeu.this.majPlateau();
             }
         }
     }
@@ -1032,7 +1065,7 @@ public class PanelJeu extends JPanel implements ActionListener
                     while (elements.hasMoreElements())
                     {
                         AbstractButton btn = elements.nextElement();
-                        if (btn.getText().equals(chiffreEcrase))
+                        if (btn.getActionCommand().equals(chiffreEcrase))
                         {
                             btn.setBackground(Color.WHITE);
                             break;
