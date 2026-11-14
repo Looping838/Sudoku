@@ -1,41 +1,82 @@
 package metier;
 
-public class Plateau 
+public class Plateau
 {
-    private Grille[][] plateau ;
+    private Grille[][] plateau;
+    private int[][]    solution;
 
     public Plateau()
     {
-        this.plateau = new Grille[3][3] ;
+        this.plateau  = new Grille[3][3];
+        this.solution = new int[9][9];
         this.initPlateau();
     }
 
-    public void         initPlateau ()
+    public void initPlateau()
     {
-        for ( int ligne = 0 ; ligne < this.plateau.length ; ligne ++ )
+        for (int ligne = 0; ligne < this.plateau.length; ligne++)
         {
-            for ( int colonne = 0 ; colonne < this.plateau[ligne].length ; colonne ++ )
+            for (int colonne = 0; colonne < this.plateau[ligne].length; colonne++)
             {
-                this.plateau[ligne][colonne] = new Grille() ;
+                this.plateau[ligne][colonne] = new Grille();
             }
         }
     }
 
-    public Grille[][]   getPlateau ()                    { return this.plateau           ;}
-    public Grille       getGrille  ( int lig , int col ) { return this.plateau[lig][col] ;}
-
-    public void         setNombre  ( int lig , int col , int lig2 , int col2 ,int nbr ) 
-    { 
-        if (nbr < 0 || nbr > 9) return;
-
-        if ( !this.estPresent( lig , col , lig2 , col2 , nbr) )
-            this.plateau[lig][col].setCase(lig2 , col2 , nbr );
+    public Grille[][] getPlateau()
+    {
+        return this.plateau;
     }
 
-    public boolean      estPresent (int lig, int col, int lig2, int col2, int nombre)
+    public Grille getGrille(int lig, int col)
     {
-        int ligneGlobale  = lig  * 3 + lig2;   // 0..8
-        int colGlobale    = col  * 3 + col2;   // 0..8
+        return this.plateau[lig][col];
+    }
+
+    public int getSolution(int ligGlob, int colGlob)
+    {
+        return this.solution[ligGlob][colGlob];
+    }
+
+    public int getNbOccurrences(int nombre)
+    {
+        int cpt = 0;
+        for (int lig = 0; lig < 3; lig++)
+        {
+            for (int col = 0; col < 3; col++)
+            {
+                for (int l = 0; l < 3; l++)
+                {
+                    for (int c = 0; c < 3; c++)
+                    {
+                        if (this.plateau[lig][col].getCase(l, c).getNombre() == nombre)
+                        {
+                            cpt++;
+                        }
+                    }
+                }
+            }
+        }
+        return cpt;
+    }
+
+    public void setNombre(int lig, int col, int lig2, int col2, int nbr)
+    {
+        if (nbr < 0 || nbr > 9)
+        {
+            return;
+        }
+
+        if (!this.estPresent(lig, col, lig2, col2, nbr))
+        {
+            this.plateau[lig][col].setCase(lig2, col2, nbr);
+        }
+    }
+
+    public boolean estPresent(int lig, int col, int lig2, int col2, int nombre)
+    {
+        int ligneGlobale = lig * 3 + lig2;
+        int colGlobale   = col * 3 + col2;
 
         for (int ligne = 0; ligne < this.plateau.length; ligne++)
         {
@@ -45,11 +86,12 @@ public class Plateau
                 {
                     for (int c = 0; c < 3; c++)
                     {
-                        // même ligne globale OU même colonne globale ?
                         if (ligne * 3 + l == ligneGlobale || colonne * 3 + c == colGlobale)
                         {
                             if (this.plateau[ligne][colonne].getCase(l, c).getNombre() == nombre)
+                            {
                                 return true;
+                            }
                         }
                     }
                 }
@@ -58,50 +100,143 @@ public class Plateau
         return false;
     }
 
-    public boolean      estResolu ()
+    public boolean estResolu()
     {
         for (int lig = 0; lig < 3; lig++)
+        {
             for (int col = 0; col < 3; col++)
+            {
                 for (int l = 0; l < 3; l++)
+                {
                     for (int c = 0; c < 3; c++)
+                    {
                         if (this.plateau[lig][col].getCase(l, c).estVide())
+                        {
                             return false;
+                        }
+                    }
+                }
+            }
+        }
         return true;
     }
 
-    public void    setPlateauJeu ( int difficulte )
+    private int[] melangerChiffres()
     {
-        int x1  = 0 ;
-        int x2  = 0 ;
-        int y1  = 0 ;
-        int y2  = 0 ;
+        int[] chiffres = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-        int nbr = 0 ;
-
-        int cpt = 0 ;
-        int essai = 0 ;
-
-        while ( cpt < 10 && essai++ < 1000)
+        for (int i = chiffres.length - 1; i > 0; i--)
         {
-            x1 = (int) (Math.random() * 3) ;
-            x2 = (int) (Math.random() * 3) ;
-            y1 = (int) (Math.random() * 3) ;
-            y2 = (int) (Math.random() * 3) ;
+            int j   = (int) (Math.random() * (i + 1));
+            int tmp = chiffres[i];
+            chiffres[i] = chiffres[j];
+            chiffres[j] = tmp;
+        }
 
-            nbr = (int) (Math.random() * 9) + 1;
-                
-            if ( this.plateau[x1][y1].getCase(x2, y2).estModifiable() )
-            {
-                int avant = this.plateau[x1][y1].getCase(x2, y2).getNombre();
-                this.setNombre(x1, y1, x2, y2, nbr);
-                int apres = this.plateau[x1][y1].getCase(x2, y2).getNombre();
-                if (apres != avant)   // placement effectif
-                {
-                    this.plateau[x1][y1].getCase(x2, y2).setEstModifiable(false);
-                    cpt++;
-                }
-            }
-        }   
+        return chiffres;
     }
 
+    private boolean remplirGrille(int indexCase)
+    {
+        if (indexCase == 81)
+        {
+            return true;
+        }
+
+        int ligGlob = indexCase / 9;
+        int colGlob = indexCase % 9;
+
+        int ligBloc = ligGlob / 3;
+        int colBloc = colGlob / 3;
+        int ligCase = ligGlob % 3;
+        int colCase = colGlob % 3;
+
+        int[] chiffres = this.melangerChiffres();
+
+        for (int i = 0; i < chiffres.length; i++)
+        {
+            int nbr = chiffres[i];
+
+            if (!this.estPresent(ligBloc, colBloc, ligCase, colCase, nbr) &&
+                !this.plateau[ligBloc][colBloc].estPresent(nbr))
+            {
+                this.plateau[ligBloc][colBloc].getCase(ligCase, colCase).setNombre(nbr);
+
+                if (this.remplirGrille(indexCase + 1))
+                {
+                    return true;
+                }
+
+                this.plateau[ligBloc][colBloc].getCase(ligCase, colCase).setNombre(0);
+            }
+        }
+
+        return false;
+    }
+
+    public void setPlateauJeu(int difficulte)
+    {
+        this.initPlateau();
+        this.remplirGrille(0);
+
+        for (int ligGlob = 0; ligGlob < 9; ligGlob++)
+        {
+            for (int colGlob = 0; colGlob < 9; colGlob++)
+            {
+                this.solution[ligGlob][colGlob] = this.plateau[ligGlob / 3][colGlob / 3]
+                                                       .getCase(ligGlob % 3, colGlob % 3)
+                                                       .getNombre();
+            }
+        }
+
+        int nbCasesASupprimer = 40;
+        if (difficulte == 1)
+        {
+            nbCasesASupprimer = 50;
+        }
+        else if (difficulte == 2)
+        {
+            nbCasesASupprimer = 58;
+        }
+
+        int supprimees = 0;
+        while (supprimees < nbCasesASupprimer)
+        {
+            int ligGlob = (int) (Math.random() * 9);
+            int colGlob = (int) (Math.random() * 9);
+
+            int ligBloc = ligGlob / 3;
+            int colBloc = colGlob / 3;
+            int ligCase = ligGlob % 3;
+            int colCase = colGlob % 3;
+
+            if (!this.plateau[ligBloc][colBloc].getCase(ligCase, colCase).estVide())
+            {
+                this.plateau[ligBloc][colBloc].getCase(ligCase, colCase).setNombre(0);
+                supprimees++;
+            }
+        }
+
+        for (int lig = 0; lig < 3; lig++)
+        {
+            for (int col = 0; col < 3; col++)
+            {
+                for (int l = 0; l < 3; l++)
+                {
+                    for (int c = 0; c < 3; c++)
+                    {
+                        if (!this.plateau[lig][col].getCase(l, c).estVide())
+                        {
+                            this.plateau[lig][col].getCase(l, c).setEstModifiable(false);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean estComplet(int nombre)
+    {
+        return this.getNbOccurrences(nombre) >= 9;
+    }
 }
