@@ -1,7 +1,7 @@
 package ihm;
 
-import java.util.Scanner;
 import controleur.Controleur;
+import java.util.Scanner;
 
 public class IhmTerminal 
 {
@@ -106,13 +106,13 @@ public class IhmTerminal
                 // Action : effacement ou pose
                 if (val == 0) 
                 {
-                    this.ctrl.effacerNombre(ligBloc, colBloc, ligCase, colCase);
+                    this.ctrl.effacerChiffre(ligBloc, colBloc, ligCase, colCase);
                     System.out.println("-> Case effacée.");
                 } 
                 else 
                 {
                     int avant = this.ctrl.getNombre(ligBloc, colBloc, ligCase, colCase);
-                    this.ctrl.setNombre(ligBloc, colBloc, ligCase, colCase, val);
+                    this.ctrl.setNbrCase(ligBloc, colBloc, ligCase, colCase, val);
                     int apres = this.ctrl.getNombre(ligBloc, colBloc, ligCase, colCase);
 
                     if (avant == apres && apres != val) 

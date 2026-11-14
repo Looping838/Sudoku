@@ -78,4 +78,11 @@ public class FrameJeu extends JFrame
 		
         return imgRedimensionnee;
     }
+
+    public void restartJeu()
+    {
+        this.ctrl.resetJeu();
+        this.creerPanelJeu();
+        this.setPnl(this.tabPanel[2]);
+    }
 }

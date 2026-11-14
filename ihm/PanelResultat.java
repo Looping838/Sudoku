@@ -56,16 +56,13 @@ public class PanelResultat extends JPanel implements ActionListener
     {
         if (e.getSource() == this.btnAccueil)
         {
+            this.ctrl.resetJeu();
             this.frame.setPnl(this.frame.getPnl(0));
-            //this.ctrl.resetJeu();
         }
-
         else if (e.getSource() == this.btnRecommencer)
         {
-            //this.frame.restartJeu();
-            this.frame.setPnl(this.frame.getPnl(this.indice - 1));
+            this.frame.restartJeu();
         }
-
         else if (e.getSource() == this.btnQuitter)
         {
             System.exit(0);

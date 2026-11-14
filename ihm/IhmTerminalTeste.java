@@ -60,18 +60,18 @@ public class IhmTerminalTeste
 
         // --- TEST 2 : Placement d'un nombre valide ---
         System.out.println("--- TEST 2 : Placement du chiffre 7 en [0,0] (bloc [0,0], case [0,0]) ---");
-        controleur.setNombre(0, 0, 0, 0, 7);
+        controleur.setNbrCase(0, 0, 0, 0, 7);
         ihm.afficherPlateau();
 
         // --- TEST 3 : Conflit / Doublon sur la même ligne globale ---
         System.out.println("--- TEST 3 : Doublon (tenter de poser 7 sur la même ligne globale en bloc [0,1], case [0,1]) ---");
-        controleur.setNombre(0, 1, 0, 1, 7);
+        controleur.setNbrCase(0, 1, 0, 1, 7);
         ihm.afficherPlateau();
         System.out.println("-> Résultat attendu : le 7 n'a pas dû être placé car déjà présent sur la ligne.\n");
 
         // --- TEST 4 : Suppression / Effacement ---
         System.out.println("--- TEST 4 : Effacer la valeur en [0,0] (bloc [0,0], case [0,0]) ---");
-        controleur.effacerNombre(0, 0, 0, 0);
+        controleur.effacerChiffre(0, 0, 0, 0);
         ihm.afficherPlateau();
 
         // --- TEST 5 : Vérification de victoire ---

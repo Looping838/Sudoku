@@ -73,36 +73,29 @@ public class PanelChoixDiff extends JPanel implements ActionListener
     }
 
     @Override
-    public void actionPerformed ( ActionEvent e )
-	{
-        
-        // Difficulté : 0 = Facile, 1 = Moyen, 2 = Difficile
-
-        // Difficulté Facile
+    public void actionPerformed(ActionEvent e)
+    {
         if (e.getSource() == this.btnFacile)
         {
-            this.ctrl.initPlateau();  
+            this.ctrl.initPlateau(0);
             this.frame.creerPanelJeu();
             this.frame.setPnl(this.frame.getPnl(this.indice + 1));
         }
 
-        // Difficulté Moyen
         if (e.getSource() == this.btnMoyen)
         {
-            this.ctrl.initPlateau();
+            this.ctrl.initPlateau(1);
             this.frame.creerPanelJeu();
             this.frame.setPnl(this.frame.getPnl(this.indice + 1));
         }
 
-        // Difficulté Difficile
         if (e.getSource() == this.btnDifficile)
         {
-            this.ctrl.initPlateau();
+            this.ctrl.initPlateau(2);
             this.frame.creerPanelJeu();
             this.frame.setPnl(this.frame.getPnl(this.indice + 1));
         }
 
-        // Retour à l'accueil
         if (e.getSource() == this.btnRetour)
         {
             this.frame.setPnl(this.frame.getPnl(this.indice - 1));

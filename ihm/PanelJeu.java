@@ -93,67 +93,71 @@ public class PanelJeu extends JPanel implements ActionListener
         {
             JToggleButton btnClique = (JToggleButton) e.getSource();
 
-            if (this.btnActif == btnClique) 
+            if (this.btnActif == btnClique)
             {
                 this.grpBtn.clearSelection();
                 this.btnActif = null;
             }
-            else 
+            else
             {
                 this.btnActif = btnClique;
             }
 
-            if (this.grpBtn != null) 
+            if (this.grpBtn != null)
             {
                 java.util.Enumeration<AbstractButton> elements = this.grpBtn.getElements();
-                while (elements.hasMoreElements()) 
+                while (elements.hasMoreElements())
                 {
                     AbstractButton btn = elements.nextElement();
-                    if (btn.getBackground() != ConstantesIHM.COULEUR_PLACE && !btn.isSelected()) 
+                    if (btn.getBackground() != ConstantesIHM.COULEUR_PLACE && !btn.isSelected())
                     {
                         btn.setBackground(Color.WHITE);
                     }
                 }
             }
 
-            this.ligBlocSelect = -1; this.colBlocSelect = -1;
-            this.ligCaseSelect = -1; this.colCaseSelect = -1;
+            this.ligBlocSelect = -1;
+            this.colBlocSelect = -1;
+            this.ligCaseSelect = -1;
+            this.colCaseSelect = -1;
             this.majPlateau();
         }
 
         if (e.getSource() == this.btnGomme)
         {
-           if (this.ligBlocSelect != -1 && this.colBlocSelect != -1 && this.ligCaseSelect != -1 && this.colCaseSelect != -1)
+            if (this.ligBlocSelect != -1 && this.colBlocSelect != -1 && this.ligCaseSelect != -1 && this.colCaseSelect != -1)
             {
                 JLabel lblContenu = (JLabel) tabPnlCases[this.ligBlocSelect][this.colBlocSelect][this.ligCaseSelect][this.colCaseSelect].getComponent(0);
                 String chiffreEfface = lblContenu.getText();
-                    
-                // On vérifie que le contrôleur autorise l'effacement
-                // if (this.ctrl.getCasePlateau(this.ligBlocSelect, this.colBlocSelect, this.ligCaseSelect, this.colCaseSelect).estModifiable())
+
+                if (this.ctrl.estCaseModifiable(this.ligBlocSelect, this.colBlocSelect, this.ligCaseSelect, this.colCaseSelect))
                 {
-                    this.ctrl.effacerNombre(this.ligBlocSelect, this.colBlocSelect, this.ligCaseSelect, this.colCaseSelect);
-                    
-                    lblContenu.setText(""); 
+                    this.ctrl.effacerChiffre(this.ligBlocSelect, this.colBlocSelect, this.ligCaseSelect, this.colCaseSelect);
+
+                    lblContenu.setText("");
                     lblContenu.setForeground(null);
 
-                    if (!chiffreEfface.equals("") && !chiffreEfface.equals("0") && this.grpBtn != null) 
+                    if (!chiffreEfface.equals("") && !chiffreEfface.equals("0") && this.grpBtn != null)
                     {
                         java.util.Enumeration<AbstractButton> elements = this.grpBtn.getElements();
-                        while (elements.hasMoreElements()) 
+                        while (elements.hasMoreElements())
                         {
                             AbstractButton btn = elements.nextElement();
-                            if (btn.getText().equals(chiffreEfface)) 
+                            if (btn.getText().equals(chiffreEfface))
                             {
                                 btn.setBackground(Color.WHITE);
-                                break; 
+                                break;
                             }
                         }
                     }
                 }
 
-                this.modeValidation = false; 
-                this.ligBlocSelect = -1; this.colBlocSelect = -1;
-                this.ligCaseSelect = -1; this.colCaseSelect = -1;
+                this.modeValidation = false;
+                this.ligBlocSelect = -1;
+                this.colBlocSelect = -1;
+                this.ligCaseSelect = -1;
+                this.colCaseSelect = -1;
+                this.majBoutons();
                 this.majPlateau();
             }
         }
@@ -170,31 +174,38 @@ public class PanelJeu extends JPanel implements ActionListener
                     this.btnIndice.setEnabled(false);
                 }
 
-                // this.ctrl.donnerIndice(); // À décommenter quand implémenté par ton collègue
                 this.majPlateau();
-                // this.majBoutons();
+                this.majBoutons();
             }
         }
 
         if (e.getSource() == this.btnBrouillon)
         {
             this.modeBrouillon = !this.modeBrouillon;
-            this.ligBlocSelect = -1; this.colBlocSelect = -1;
-            this.ligCaseSelect = -1; this.colCaseSelect = -1;
+            this.ligBlocSelect = -1;
+            this.colBlocSelect = -1;
+            this.ligCaseSelect = -1;
+            this.colCaseSelect = -1;
 
-            if(this.modeBrouillon)
+            if (this.modeBrouillon)
+            {
                 this.btnBrouillon.setBackground(ConstantesIHM.COULEUR_BROUILLON_ACTIVE);
-            else 
-                this.btnBrouillon.setBackground(ConstantesIHM.COULEUR_SURVOL);
+            }
+            else
+            {
+                this.btnBrouillon.setBackground(Color.WHITE);
+            }
 
             this.majPlateau();
         }
 
         if (e.getSource() == this.btnValide)
         {
-            this.modeValidation = true; 
-            this.ligBlocSelect = -1; this.colBlocSelect = -1;
-            this.ligCaseSelect = -1; this.colCaseSelect = -1;
+            this.modeValidation = true;
+            this.ligBlocSelect = -1;
+            this.colBlocSelect = -1;
+            this.ligCaseSelect = -1;
+            this.colCaseSelect = -1;
             this.majPlateau();
 
             if (!this.ctrl.estGagne())
@@ -205,17 +216,17 @@ public class PanelJeu extends JPanel implements ActionListener
                 if (this.nbValidationsRestantes <= 0)
                 {
                     this.frame.afficherPanelResultat(false);
-                    this.frame.setPnl(this.frame.getPnl(this.indice + 1));
-                    // this.ctrl.resetJeu(); // À décommenter
                     return;
                 }
             }
             else
             {
                 this.btnGomme.setEnabled(false);
-                if (this.grpBtn != null) {
+                if (this.grpBtn != null)
+                {
                     java.util.Enumeration<AbstractButton> elements = this.grpBtn.getElements();
-                    while (elements.hasMoreElements()) {
+                    while (elements.hasMoreElements())
+                    {
                         elements.nextElement().setEnabled(false);
                     }
                 }
@@ -223,15 +234,27 @@ public class PanelJeu extends JPanel implements ActionListener
             }
         }
 
-        if (e.getSource() == this.btnReset)   { this.reset(); }
-        if (e.getSource() == this.btnRestart) { this.restart(); }
+        if (e.getSource() == this.btnReset)
+        {
+            this.reset();
+        }
+
+        if (e.getSource() == this.btnRestart)
+        {
+            this.restart();
+        }
+
         if (e.getSource() == this.btnAnnuler)
         {
-            // this.ctrl.depilerCase(); // À décommenter
+            this.ctrl.depilerCase();
+            this.majBoutons();
             this.majPlateau();
-            //this.majBoutons();
         }
-        if (e.getSource() == this.btnAccueil) { this.frame.setPnl(this.frame.getPnl(0)); }
+
+        if (e.getSource() == this.btnAccueil)
+        {
+            this.frame.setPnl(this.frame.getPnl(0));
+        }
     }
 
     /*-------------------------------*/
@@ -624,8 +647,8 @@ public class PanelJeu extends JPanel implements ActionListener
                     {
                         Color couleurCase = Color.WHITE;
 
-                        if (ligB == this.ligBlocSelect && colB == this.colBlocSelect && 
-                            ligC == this.ligCaseSelect && colC == this.colCaseSelect) 
+                        if (ligB == this.ligBlocSelect && colB == this.colBlocSelect &&
+                            ligC == this.ligCaseSelect && colC == this.colCaseSelect)
                         {
                             couleurCase = ConstantesIHM.COULEUR_SELECTION;
                         }
@@ -634,32 +657,35 @@ public class PanelJeu extends JPanel implements ActionListener
 
                         JLabel lbl = (JLabel) this.tabPnlCases[ligB][colB][ligC][colC].getComponent(0);
                         CardLayout croupier = (CardLayout) this.tabPnlCases[ligB][colB][ligC][colC].getLayout();
-                        
+
                         int vraiChiffre = this.ctrl.getNombre(ligB, colB, ligC, colC);
-                        
-                        if (vraiChiffre == 0) 
+
+                        if (vraiChiffre == 0)
                         {
-                            lbl.setText(""); 
+                            lbl.setText("");
                             croupier.show(this.tabPnlCases[ligB][colB][ligC][colC], "BROUILLON");
-                        } 
-                        else 
+                        }
+                        else
                         {
-                            lbl.setText(String.valueOf(vraiChiffre)); 
-                            
-                            // A décommenter quand implémenté
-                            // if (!this.ctrl.getCasePlateau(ligB, colB, ligC, colC).estModifiable()) 
-                            //    lbl.setFont(new Font("Sans-Serif", Font.BOLD, 24));
-                            // else 
+                            lbl.setText(String.valueOf(vraiChiffre));
+
+                            if (!this.ctrl.estCaseModifiable(ligB, colB, ligC, colC))
+                            {
+                                lbl.setFont(new Font("Sans-Serif", Font.BOLD, 24));
+                            }
+                            else
+                            {
                                 lbl.setFont(new Font("Sans-Serif", Font.PLAIN, 24));
-                            
+                            }
+
                             croupier.show(this.tabPnlCases[ligB][colB][ligC][colC], "VALEUR");
                         }
                     }
                 }
             }
         }
-        
-        // this.btnAnnuler.setEnabled(this.ctrl.peutAnnuler());
+
+        this.btnAnnuler.setEnabled(this.ctrl.peutAnnuler());
         this.repaint();
     }
 
@@ -672,41 +698,32 @@ public class PanelJeu extends JPanel implements ActionListener
             while (elements.hasMoreElements()) 
             {
                 AbstractButton btn = elements.nextElement();
-                
-                // --- NOTE POUR LE SUDOKU ---
-                // Au Sudoku, on ne grise un bouton que si le joueur a placé ce chiffre 9 fois.
-                // À décommenter quand ton collègue aura créé une méthode estComplet(numero) dans le Métier !
-                
-                /*
                 int numero = Integer.parseInt(btn.getText());
-                if (this.ctrl.estComplet(numero))
-                    btn.setBackground(ConstantesIHM.COULEUR_GRIS_PLACE);
-                else
-                    btn.setBackground(Color.WHITE);
-                */
 
-                // En attendant la méthode du métier, on s'assure que le bouton reprend sa couleur
-                // normale (blanc) s'il n'est plus sélectionné, pour corriger ton problème de style !
-                if (btn.getBackground() == ConstantesIHM.COULEUR_PLACE && !btn.isSelected()) 
+                // Si le chiffre a été placé 9 fois, on le grise (ou on le désactive)
+                if (this.ctrl.estComplet(numero))
                 {
-                    btn.setBackground(Color.WHITE);
+                    btn.setBackground(ConstantesIHM.COULEUR_PLACE);
+                    // Optionnel : btn.setEnabled(false); si tu veux bloquer complètement le clic
                 }
-                
-                btn.setEnabled(true);
+                else
+                {
+                    if (!btn.isSelected()) {
+                        btn.setBackground(Color.WHITE);
+                    }
+                }
             }
         }
     }
 
     private void initBoutonIndice()
     {
-        /* À décommenter quand la difficulté sera implémentée dans Sudoku.java
         int difficulte = this.ctrl.getDifficulte();
+
         if      (difficulte == 0) this.nbIndicesRestants = 2;
         else if (difficulte == 1) this.nbIndicesRestants = 1;
         else                      this.nbIndicesRestants = 0;
-        */
-        this.nbIndicesRestants = 2; // Valeur par défaut en attendant
-
+        
         this.btnIndice.setText("  " + this.nbIndicesRestants); 
         if (this.nbIndicesRestants > 0)
         {
@@ -738,15 +755,17 @@ public class PanelJeu extends JPanel implements ActionListener
 
     public void reset()
     {
-        this.ligBlocSelect = -1; this.colBlocSelect = -1;
-        this.ligCaseSelect = -1; this.colCaseSelect = -1;
+        this.ligBlocSelect = -1;
+        this.colBlocSelect = -1;
+        this.ligCaseSelect = -1;
+        this.colCaseSelect = -1;
         this.modeValidation = false;
         this.modeBrouillon  = false;
 
         this.btnBrouillon.setBackground(Color.WHITE);
         this.btnActif = null;
         this.btnGomme.setEnabled(true);
-        
+
         for (int ligB = 0; ligB < 3; ligB++)
         {
             for (int colB = 0; colB < 3; colB++)
@@ -756,27 +775,30 @@ public class PanelJeu extends JPanel implements ActionListener
                     for (int colC = 0; colC < 3; colC++)
                     {
                         JPanel pnlBrouillon = (JPanel) tabPnlCases[ligB][colB][ligC][colC].getComponent(1);
-                        for (int i = 0; i < 9; i++) ((JLabel) pnlBrouillon.getComponent(i)).setText("");
-                        
-                        // if (this.ctrl.getCasePlateau(ligB, colB, ligC, colC).estModifiable())
+                        for (int i = 0; i < 9; i++)
+                        {
+                            ((JLabel) pnlBrouillon.getComponent(i)).setText("");
+                        }
+
+                        if (this.ctrl.estCaseModifiable(ligB, colB, ligC, colC))
                         {
                             JLabel lblContenu = (JLabel) tabPnlCases[ligB][colB][ligC][colC].getComponent(0);
                             String chiffreEfface = lblContenu.getText();
 
                             if (!chiffreEfface.equals("") && !chiffreEfface.equals("0"))
                             {
-                                this.ctrl.effacerNombre(ligB, colB, ligC, colC);
-                                        
-                                lblContenu.setText(""); 
+                                this.ctrl.effacerChiffre(ligB, colB, ligC, colC);
+
+                                lblContenu.setText("");
                                 lblContenu.setForeground(null);
 
-                                if (this.grpBtn != null) 
+                                if (this.grpBtn != null)
                                 {
                                     java.util.Enumeration<AbstractButton> elements = this.grpBtn.getElements();
-                                    while (elements.hasMoreElements()) 
+                                    while (elements.hasMoreElements())
                                     {
                                         AbstractButton btn = elements.nextElement();
-                                        if (btn.getText().equals(chiffreEfface)) 
+                                        if (btn.getText().equals(chiffreEfface))
                                         {
                                             btn.setBackground(Color.WHITE);
                                             break;
@@ -789,16 +811,19 @@ public class PanelJeu extends JPanel implements ActionListener
                 }
             }
         }
-        
+
+        this.majBoutons();
         this.majPlateau();
     }
 
     public void restart()
     {
-        // this.ctrl.resetJeu(); // À décommenter
+        this.ctrl.resetJeu();
 
-        this.ligBlocSelect = -1; this.colBlocSelect = -1;
-        this.ligCaseSelect = -1; this.colCaseSelect = -1;
+        this.ligBlocSelect = -1;
+        this.colBlocSelect = -1;
+        this.ligCaseSelect = -1;
+        this.colCaseSelect = -1;
         this.modeValidation = false;
         this.modeBrouillon  = false;
 
@@ -807,7 +832,7 @@ public class PanelJeu extends JPanel implements ActionListener
         this.initNbValidations();
         this.btnActif = null;
         this.btnGomme.setEnabled(true);
-        
+
         this.dessinerPlateau();
         this.dessinerBoutons();
         this.majPlateau();
@@ -815,133 +840,126 @@ public class PanelJeu extends JPanel implements ActionListener
 
     private class GereSouris extends MouseAdapter
     {
-        private int ligBloc, colBloc, ligCase, colCase; 
+        private int ligBloc, colBloc, ligCase, colCase;
 
         public GereSouris(int lig, int col, int lig2, int col2)
         {
-            this.ligBloc = lig; this.colBloc = col;
-            this.ligCase = lig2; this.colCase = col2;
+            this.ligBloc = lig;
+            this.colBloc = col;
+            this.ligCase = lig2;
+            this.colCase = col2;
         }
 
         public void mouseClicked(MouseEvent e)
         {
-            if (PanelJeu.this.ctrl.estGagne()) { return; }
-            
-            if (!PanelJeu.this.modeBrouillon) 
+            if (PanelJeu.this.ctrl.estGagne())
             {
-                /* 
-                // ECHANGE A DECOMMENTER QUAND LA METHODE SERA DANS LE CONTROLEUR
+                return;
+            }
+
+            if (!PanelJeu.this.modeBrouillon)
+            {
                 if (PanelJeu.this.ligBlocSelect != -1 && PanelJeu.this.btnActif == null)
                 {
-                    int valCliquee = PanelJeu.this.ctrl.getNombre(this.ligBloc, this.colBloc, this.ligCase, this.colCase);
                     int valPremiereCase = PanelJeu.this.ctrl.getNombre(PanelJeu.this.ligBlocSelect, PanelJeu.this.colBlocSelect, PanelJeu.this.ligCaseSelect, PanelJeu.this.colCaseSelect);
-                    
-                    boolean cibleModifiable = PanelJeu.this.ctrl.getCasePlateau(this.ligBloc, this.colBloc, this.ligCase, this.colCase).estModifiable();
-                    boolean sourceModifiable = PanelJeu.this.ctrl.getCasePlateau(PanelJeu.this.ligBlocSelect, PanelJeu.this.colBlocSelect, PanelJeu.this.ligCaseSelect, PanelJeu.this.colCaseSelect).estModifiable();
 
-                    if (valPremiereCase != 0 && cibleModifiable && sourceModifiable && 
+                    boolean cibleModifiable  = PanelJeu.this.ctrl.estCaseModifiable(this.ligBloc, this.colBloc, this.ligCase, this.colCase);
+                    boolean sourceModifiable = PanelJeu.this.ctrl.estCaseModifiable(PanelJeu.this.ligBlocSelect, PanelJeu.this.colBlocSelect, PanelJeu.this.ligCaseSelect, PanelJeu.this.colCaseSelect);
+
+                    if (valPremiereCase != 0 && cibleModifiable && sourceModifiable &&
                         (PanelJeu.this.ligBlocSelect != this.ligBloc || PanelJeu.this.colBlocSelect != this.colBloc || PanelJeu.this.ligCaseSelect != this.ligCase || PanelJeu.this.colCaseSelect != this.colCase))
                     {
                         PanelJeu.this.ctrl.echangerNbr(PanelJeu.this.ligBlocSelect, PanelJeu.this.colBlocSelect, PanelJeu.this.ligCaseSelect, PanelJeu.this.colCaseSelect, this.ligBloc, this.colBloc, this.ligCase, this.colCase);
-                        
+
                         PanelJeu.this.modeValidation = false;
-                        PanelJeu.this.ligBlocSelect = -1; PanelJeu.this.colBlocSelect = -1;
-                        PanelJeu.this.ligCaseSelect = -1; PanelJeu.this.colCaseSelect = -1;
+                        PanelJeu.this.ligBlocSelect = -1;
+                        PanelJeu.this.colBlocSelect = -1;
+                        PanelJeu.this.ligCaseSelect = -1;
+                        PanelJeu.this.colCaseSelect = -1;
 
                         PanelJeu.this.majPlateau();
-                        return; 
+                        return;
                     }
                 }
-                */
-                
+
                 if (PanelJeu.this.ligBlocSelect == this.ligBloc && PanelJeu.this.colBlocSelect == this.colBloc &&
-                    PanelJeu.this.ligCaseSelect == this.ligCase && PanelJeu.this.colCaseSelect == this.colCase) 
+                    PanelJeu.this.ligCaseSelect == this.ligCase && PanelJeu.this.colCaseSelect == this.colCase)
                 {
-                    PanelJeu.this.ligBlocSelect = -1; PanelJeu.this.colBlocSelect = -1;
-                    PanelJeu.this.ligCaseSelect = -1; PanelJeu.this.colCaseSelect = -1;
-                } 
-                else 
+                    PanelJeu.this.ligBlocSelect = -1;
+                    PanelJeu.this.colBlocSelect = -1;
+                    PanelJeu.this.ligCaseSelect = -1;
+                    PanelJeu.this.colCaseSelect = -1;
+                }
+                else
                 {
-                    PanelJeu.this.ligBlocSelect = this.ligBloc; PanelJeu.this.colBlocSelect = this.colBloc;
-                    PanelJeu.this.ligCaseSelect = this.ligCase; PanelJeu.this.colCaseSelect = this.colCase;
+                    PanelJeu.this.ligBlocSelect = this.ligBloc;
+                    PanelJeu.this.colBlocSelect = this.colBloc;
+                    PanelJeu.this.ligCaseSelect = this.ligCase;
+                    PanelJeu.this.colCaseSelect = this.colCase;
                 }
 
-                if (PanelJeu.this.btnActif != null 
-                    && PanelJeu.this.ctrl.getNombre(this.ligBloc, this.colBloc, this.ligCase, this.colCase) == 0)
-                    // && PanelJeu.this.ctrl.getCasePlateau(this.ligBloc, this.colBloc, this.ligCase, this.colCase).estModifiable())
+                if (PanelJeu.this.btnActif != null
+                    && PanelJeu.this.ctrl.getNombre(this.ligBloc, this.colBloc, this.ligCase, this.colCase) == 0
+                    && PanelJeu.this.ctrl.estCaseModifiable(this.ligBloc, this.colBloc, this.ligCase, this.colCase))
                 {
                     int valeur = Integer.parseInt(PanelJeu.this.btnActif.getText());
 
-                    /* 
-                    if (PanelJeu.this.ctrl.estPresent(valeur)) 
-                    {
-                        PanelJeu.this.btnActif.setSelected(false);
-                        PanelJeu.this.btnActif.setBackground(ConstantesIHM.COULEUR_GRIS_PLACE);
-                        PanelJeu.this.btnActif = null;
-                    }
-                    else 
-                    */
-                    {
-                        JLabel lblContenu = (JLabel) tabPnlCases[this.ligBloc][this.colBloc][this.ligCase][this.colCase].getComponent(0);
-                        lblContenu.setForeground(Color.BLACK); 
+                    JLabel lblContenu = (JLabel) tabPnlCases[this.ligBloc][this.colBloc][this.ligCase][this.colCase].getComponent(0);
+                    lblContenu.setForeground(Color.BLACK);
 
-                        PanelJeu.this.ctrl.setNombre(this.ligBloc, this.colBloc, this.ligCase, this.colCase, valeur);
-                        
-                        PanelJeu.this.btnActif.setBackground(ConstantesIHM.COULEUR_PLACE);
-                        PanelJeu.this.grpBtn.clearSelection(); 
-                        PanelJeu.this.btnActif = null;
+                    PanelJeu.this.ctrl.setNbrCase(this.ligBloc, this.colBloc, this.ligCase, this.colCase, valeur);
 
-                        PanelJeu.this.ligBlocSelect = -1; PanelJeu.this.colBlocSelect = -1;
-                        PanelJeu.this.ligCaseSelect = -1; PanelJeu.this.colCaseSelect = -1;
-                        PanelJeu.this.modeValidation = false; 
-                    }
+                    PanelJeu.this.majBoutons();
+                    PanelJeu.this.grpBtn.clearSelection();
+                    PanelJeu.this.btnActif = null;
+
+                    PanelJeu.this.ligBlocSelect = -1;
+                    PanelJeu.this.colBlocSelect = -1;
+                    PanelJeu.this.ligCaseSelect = -1;
+                    PanelJeu.this.colCaseSelect = -1;
+                    PanelJeu.this.modeValidation = false;
                 }
 
                 PanelJeu.this.majPlateau();
             }
             else
             {
-                if (PanelJeu.this.btnActif != null 
-                    // && PanelJeu.this.ctrl.getCasePlateau(this.ligBloc, this.colBloc, this.ligCase, this.colCase).estModifiable()
+                if (PanelJeu.this.btnActif != null
+                    && PanelJeu.this.ctrl.estCaseModifiable(this.ligBloc, this.colBloc, this.ligCase, this.colCase)
                     && PanelJeu.this.ctrl.getNombre(this.ligBloc, this.colBloc, this.ligCase, this.colCase) == 0)
                 {
                     int valeur = Integer.parseInt(PanelJeu.this.btnActif.getText());
 
-                    /*
-                    if (PanelJeu.this.ctrl.estPresent(valeur)) 
-                    {
-                        PanelJeu.this.btnActif.setSelected(false);
-                        PanelJeu.this.btnActif.setBackground(ConstantesIHM.COULEUR_GRIS_PLACE);
-                        PanelJeu.this.btnActif = null;
-                    }
-                    else 
-                    */
-                    {
-                        JPanel pnlBrouillon = (JPanel) tabPnlCases[this.ligBloc][this.colBloc][this.ligCase][this.colCase].getComponent(1);
-                        JLabel lblPetitNum = (JLabel) pnlBrouillon.getComponent(valeur - 1);
+                    JPanel pnlBrouillon = (JPanel) tabPnlCases[this.ligBloc][this.colBloc][this.ligCase][this.colCase].getComponent(1);
+                    JLabel lblPetitNum = (JLabel) pnlBrouillon.getComponent(valeur - 1);
 
-                        if (lblPetitNum.getText().equals("")) lblPetitNum.setText(String.valueOf(valeur)); 
-                        else                                  lblPetitNum.setText(""); 
+                    if (lblPetitNum.getText().equals(""))
+                    {
+                        lblPetitNum.setText(String.valueOf(valeur));
+                    }
+                    else
+                    {
+                        lblPetitNum.setText("");
                     }
                 }
             }
         }
 
         @Override
-        public void mouseEntered(MouseEvent e) 
+        public void mouseEntered(MouseEvent e)
         {
-            if (PanelJeu.this.ligBlocSelect != this.ligBloc || PanelJeu.this.colBlocSelect != this.colBloc || 
-                PanelJeu.this.ligCaseSelect != this.ligCase || PanelJeu.this.colCaseSelect != this.colCase) 
+            if (PanelJeu.this.ligBlocSelect != this.ligBloc || PanelJeu.this.colBlocSelect != this.colBloc ||
+                PanelJeu.this.ligCaseSelect != this.ligCase || PanelJeu.this.colCaseSelect != this.colCase)
             {
                 PanelJeu.this.tabPnlCases[this.ligBloc][this.colBloc][this.ligCase][this.colCase].setBackground(ConstantesIHM.COULEUR_SURVOL);
             }
         }
 
         @Override
-        public void mouseExited(MouseEvent e) 
+        public void mouseExited(MouseEvent e)
         {
-            if (PanelJeu.this.ligBlocSelect != this.ligBloc || PanelJeu.this.colBlocSelect != this.colBloc || 
-                PanelJeu.this.ligCaseSelect != this.ligCase || PanelJeu.this.colCaseSelect != this.colCase) 
+            if (PanelJeu.this.ligBlocSelect != this.ligBloc || PanelJeu.this.colBlocSelect != this.colBloc ||
+                PanelJeu.this.ligCaseSelect != this.ligCase || PanelJeu.this.colCaseSelect != this.colCase)
             {
                 PanelJeu.this.tabPnlCases[this.ligBloc][this.colBloc][this.ligCase][this.colCase].setBackground(Color.WHITE);
             }
@@ -950,94 +968,99 @@ public class PanelJeu extends JPanel implements ActionListener
 
     private class GereDepot extends TransferHandler
     {
-        private int ligBloc, colBloc, ligCase, colCase; 
+        private int ligBloc, colBloc, ligCase, colCase;
 
         public GereDepot(int lig, int col, int lig2, int col2)
         {
-            this.ligBloc = lig; this.colBloc = col;
-            this.ligCase = lig2; this.colCase = col2;
+            this.ligBloc = lig;
+            this.colBloc = col;
+            this.ligCase = lig2;
+            this.colCase = col2;
         }
 
         @Override
         public boolean canImport(TransferSupport support)
         {
-            if (!support.isDrop()) return false;
-            if (!support.isDataFlavorSupported(java.awt.datatransfer.DataFlavor.stringFlavor)) return false;
-            return true; // Remplacer par ctrl.getCasePlateau(ligBloc, colBloc, ligCase, colCase).estModifiable() quand implémenté
+            if (!support.isDrop())
+            {
+                return false;
+            }
+            if (!support.isDataFlavorSupported(java.awt.datatransfer.DataFlavor.stringFlavor))
+            {
+                return false;
+            }
+            return PanelJeu.this.ctrl.estCaseModifiable(this.ligBloc, this.colBloc, this.ligCase, this.colCase);
         }
 
         @Override
         public boolean importData(TransferSupport support)
         {
-            if (!canImport(support)) return false;
+            if (!canImport(support))
+            {
+                return false;
+            }
 
-            try 
+            try
             {
                 String donnees = (String) support.getTransferable().getTransferData(java.awt.datatransfer.DataFlavor.stringFlavor);
                 int valeurAjoutee = Integer.parseInt(donnees);
 
-                // if (PanelJeu.this.ctrl.estPresent(valeurAjoutee)) return false;
-
-                if (PanelJeu.this.modeBrouillon) 
+                if (PanelJeu.this.modeBrouillon)
                 {
                     JPanel pnlBrouillon = (JPanel) tabPnlCases[this.ligBloc][this.colBloc][this.ligCase][this.colCase].getComponent(1);
                     JLabel lblPetitNum = (JLabel) pnlBrouillon.getComponent(valeurAjoutee - 1);
-                    
-                    if (lblPetitNum.getText().equals("")) lblPetitNum.setText(String.valueOf(valeurAjoutee));
-                    else                                  lblPetitNum.setText("");
+
+                    if (lblPetitNum.getText().equals(""))
+                    {
+                        lblPetitNum.setText(String.valueOf(valeurAjoutee));
+                    }
+                    else
+                    {
+                        lblPetitNum.setText("");
+                    }
 
                     PanelJeu.this.majPlateau();
-                    return true; 
+                    return true;
                 }
 
                 JLabel lblContenu = (JLabel) tabPnlCases[this.ligBloc][this.colBloc][this.ligCase][this.colCase].getComponent(0);
                 String chiffreEcrase = lblContenu.getText();
-                
-                if (!chiffreEcrase.equals("") && !chiffreEcrase.equals("0")) 
-                {
-                    if (PanelJeu.this.grpBtn != null) 
-                    {
-                        java.util.Enumeration<AbstractButton> elements = PanelJeu.this.grpBtn.getElements();
-                        while (elements.hasMoreElements()) 
-                        {
-                            AbstractButton btn = elements.nextElement();
-                            if (btn.getText().equals(chiffreEcrase)) 
-                            {
-                                btn.setBackground(Color.WHITE);
-                                break;
-                            }
-                        }
-                    }
-                }
 
-                PanelJeu.this.ctrl.setNombre(this.ligBloc, this.colBloc, this.ligCase, this.colCase, valeurAjoutee);
-                lblContenu.setForeground(Color.BLACK);
-
-                if (PanelJeu.this.grpBtn != null) 
+                if (!chiffreEcrase.equals("") && !chiffreEcrase.equals("0") && PanelJeu.this.grpBtn != null)
                 {
                     java.util.Enumeration<AbstractButton> elements = PanelJeu.this.grpBtn.getElements();
-                    while (elements.hasMoreElements()) 
+                    while (elements.hasMoreElements())
                     {
                         AbstractButton btn = elements.nextElement();
-                        if (btn.getText().equals(String.valueOf(valeurAjoutee))) 
+                        if (btn.getText().equals(chiffreEcrase))
                         {
-                            btn.setBackground(ConstantesIHM.COULEUR_PLACE);
-                            PanelJeu.this.grpBtn.clearSelection();
+                            btn.setBackground(Color.WHITE);
                             break;
                         }
                     }
                 }
 
-                PanelJeu.this.ligBlocSelect = -1; PanelJeu.this.colBlocSelect = -1;
-                PanelJeu.this.ligCaseSelect = -1; PanelJeu.this.colCaseSelect = -1;
+                PanelJeu.this.ctrl.setNbrCase(this.ligBloc, this.colBloc, this.ligCase, this.colCase, valeurAjoutee);
+                lblContenu.setForeground(Color.BLACK);
+
+                if (PanelJeu.this.grpBtn != null)
+                {
+                    PanelJeu.this.grpBtn.clearSelection();
+                }
+
+                PanelJeu.this.ligBlocSelect = -1;
+                PanelJeu.this.colBlocSelect = -1;
+                PanelJeu.this.ligCaseSelect = -1;
+                PanelJeu.this.colCaseSelect = -1;
                 PanelJeu.this.modeValidation = false;
                 PanelJeu.this.btnActif = null;
-                
+
+                PanelJeu.this.majBoutons();
                 PanelJeu.this.majPlateau();
-                
+
                 return true;
-            } 
-            catch (Exception e) 
+            }
+            catch (Exception e)
             {
                 e.printStackTrace();
                 return false;
