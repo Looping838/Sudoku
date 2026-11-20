@@ -288,7 +288,7 @@ public class PanelJeu extends JPanel implements ActionListener
 
         this.lblValidation          = new JLabel();
         this.lblValidation          .setOpaque(false);
-        this.lblValidation          .setFont(new Font("Sans-Serif", Font.PLAIN, 18));
+        this.lblValidation          .setFont(new Font("Sans-Serif", Font.BOLD, 18));
         this.lblValidation          .setLayout(new FlowLayout(FlowLayout.CENTER, 10, 15));
 
         this.initNbValidations();
@@ -315,9 +315,9 @@ public class PanelJeu extends JPanel implements ActionListener
         this.pnlColonneDroite       = new JPanel(new GridBagLayout());
         this.pnlColonneDroite       .setOpaque(false);
 
-        this.separateurHaut         = new JSeparator(SwingConstants.HORIZONTAL);
+        /*this.separateurHaut         = new JSeparator(SwingConstants.HORIZONTAL);
         this.separateurHaut         .setForeground(ConstantesIHM.COULEUR_SEPARATEUR);
-        this.separateurHaut         .setBackground(ConstantesIHM.COULEUR_FOND_SEPARATEUR);
+        this.separateurHaut         .setBackground(ConstantesIHM.COULEUR_FOND_SEPARATEUR);*/
 
         this.separateurBas          = new JSeparator(SwingConstants.HORIZONTAL);
         this.separateurBas          .setForeground(ConstantesIHM.COULEUR_SEPARATEUR);
@@ -404,7 +404,7 @@ public class PanelJeu extends JPanel implements ActionListener
         this.pnlBandeau.add(lblValidation);
         
         this.pnlHaut   .add(pnlBandeau     , BorderLayout.CENTER  );
-        this.pnlHaut   .add(separateurHaut , BorderLayout.SOUTH );
+        //this.pnlHaut   .add(separateurHaut , BorderLayout.SOUTH );
 
         GridBagConstraints gbcOutils    = new GridBagConstraints();
         gbcOutils.fill                  = GridBagConstraints.BOTH; 
@@ -550,7 +550,7 @@ public class PanelJeu extends JPanel implements ActionListener
                         for (int valeurLabel = 1; valeurLabel <= 9; valeurLabel++)
                         {
                             JLabel lblNombre = new JLabel("", SwingConstants.CENTER);
-                            lblNombre.setFont(new Font("Sans-Serif", Font.PLAIN, 15)); 
+                            lblNombre.setFont(new Font("Sans-Serif", Font.ITALIC, 15)); 
                             lblNombre.setForeground(ConstantesIHM.COULEUR_GRIS_BROUILLON);
                             pnlBrouillon.add(lblNombre);
                         }
@@ -566,7 +566,7 @@ public class PanelJeu extends JPanel implements ActionListener
                         else
                         {
                             lblNombre = new JLabel("", SwingConstants.CENTER);
-                            lblNombre.setFont(new Font("Sans-Serif", Font.PLAIN, 24));
+                            lblNombre.setFont(new Font("Sans-Serif", Font.ITALIC, 24));
                         }
                         lblNombre.setOpaque(false); 
 
@@ -701,7 +701,7 @@ public class PanelJeu extends JPanel implements ActionListener
                             }
                             else
                             {
-                                lbl.setFont(new Font("Sans-Serif", Font.PLAIN, 24));
+                                lbl.setFont(new Font("Sans-Serif", Font.ITALIC, 24));
                             }
 
                             croupier.show(this.tabPnlCases[ligB][colB][ligC][colC], "VALEUR");
